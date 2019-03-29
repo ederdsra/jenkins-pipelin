@@ -21,8 +21,9 @@ try {
          sh 'git fetch --all --prune'
 
          // Merge to dev
+         sh 'git checkout rc/v1.0'
          sh 'git checkout dev'
-         sh "git merge ${RC_BRANCH}"
+         sh "git merge origin/${RC_BRANCH}"
          sh 'git push origin dev'
 
          // Merge to master and Tag
