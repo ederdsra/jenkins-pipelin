@@ -22,14 +22,14 @@ try {
 
          // Merge to dev
          sh 'git checkout dev'
-         sh 'git merge ${RC_BRANCH}'
+         sh "git merge ${RC_BRANCH}"
          sh 'git push origin dev'
 
          // Merge to master and Tag
          sh 'git checkout master'
-         sh 'git merge ${RC_BRANCH}'
-         sh 'git tag ${NEW_TAG}'
-         sh 'git push origin master'
+         sh "git merge ${RC_BRANCH}"
+         sh "git tag ${NEW_TAG}"
+         sh 'git push --tags origin master'
       }
    }
 
