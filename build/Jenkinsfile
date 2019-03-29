@@ -1,7 +1,7 @@
 try {
 
    // Input Step
-   timeout(time: 5, unit: "DAYS") {
+   timeout(time: 5, unit: "HOURS") {
       input message: "Do you want to create the tag: ${NEW_TAG} and deploy it to Staging?", ok: "Yes", submitter: "ariel,roberto,eder"
    }
 
