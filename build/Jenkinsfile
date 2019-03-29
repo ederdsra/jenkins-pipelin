@@ -1,6 +1,4 @@
-// job
 try {
-
    // New Tag
    def NEW_TAG = "${TAG}"
    NEW_TAG = NEW_TAG.substring(0, NEW_TAG.indexOf('-'))
