@@ -6,7 +6,7 @@ try {
    NEW_TAG = NEW_TAG.substring(0, NEW_TAG.indexOf('-'))
 
    // RC Branch
-   def RC_BRANCH = "rc/" + NEW_TAG.substring(1)
+   def RC_BRANCH = "rc/" + NEW_TAG
 
    // Input Step
    timeout(time: 15, unit: "MINUTES") {
