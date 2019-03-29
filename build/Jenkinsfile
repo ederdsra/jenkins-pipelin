@@ -2,9 +2,6 @@ try {
    // RC Branch
    def RC_BRANCH
    
-   //sh "git rev-parse --short HEAD > .git/commit-id"
-   //commit_id = readFile('.git/commit-id').trim()
-   
    // New Tag
    def NEW_TAG = "${TAG}"
    NEW_TAG = NEW_TAG.substring(0, NEW_TAG.indexOf('-'))
@@ -20,14 +17,18 @@ try {
          // Fetch all
          sh 'git fetch --all --prune'
 
+         // Get RC Branch
+         sh "git branch --contains tags/${TAG} > .git/rc-branch"
+         RC_BRANCH = readFile('.git/rc-branch').trim().substring(2)
+
          // Merge to dev
          sh 'git checkout dev'
-         sh 'git merge ${TAG}'
+         sh 'git merge ${RC_BRANCH}'
          sh 'git push origin dev'
 
          // Merge to master and Tag
          sh 'git checkout master'
-         sh 'git merge ${TAG}'
+         sh 'git merge ${RC_BRANCH}'
          sh 'git tag ${NEW_TAG}'
          sh 'git push origin master'
       }
