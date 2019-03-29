@@ -19,14 +19,15 @@ try {
          sh 'git fetch --all --prune'
 
          // Get RC Branch
+         sh "git branch --contains tags/${TAG}"
          sh "git branch --contains tags/${TAG} > .git/rc-branch"
          RC_BRANCH = readFile('.git/rc-branch').trim().substring(2)
 
-         println RC_BRANCH
-         
+         sh "echo ${RC_BRANCH}
+
          // Merge to dev
          sh 'git checkout dev'
-         sh "git merge ${RC_BRANCH}"
+         sh 'git merge ${RC_BRANCH}'
          sh 'git push origin dev'
 
          // Merge to master and Tag
