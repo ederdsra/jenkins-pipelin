@@ -23,7 +23,7 @@ try {
          sh "git branch --contains tags/${TAG} > .git/rc-branch"
          RC_BRANCH = readFile('.git/rc-branch').trim().substring(2)
 
-         sh "echo ${RC_BRANCH}
+         sh "echo ${RC_BRANCH}"
 
          // Merge to dev
          sh 'git checkout dev'
