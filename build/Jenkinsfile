@@ -1,6 +1,10 @@
 try {
-   
-   
+
+   // Input Step
+   timeout(time: 5, unit: "DAYS") {
+      input message: "Do you want to create the tag: ${NEW_TAG} and deploy it to Staging?", ok: "Yes", submitter: "ariel,roberto,eder"
+   }
+
    // New Tag
    def NEW_TAG = "${TAG}"
    NEW_TAG = NEW_TAG.substring(0, NEW_TAG.indexOf('-'))
@@ -8,29 +12,24 @@ try {
    // RC Branch
    def RC_BRANCH = "rc/" + NEW_TAG
 
-   // Input Step
-   timeout(time: 15, unit: "MINUTES") {
-      input message: "Do you want to create the tag: ${NEW_TAG} and deploy it to Staging?", ok: "Yes", submitter: "ariel,roberto,eder"
-   }
-
    stage('Merge & Tag') {
       
       node('master') {
          checkout scm
          // Fetch all
-         sh 'git fetch --all --prune'
+         sh "git fetch --all --prune"
 
          // Merge to dev
-         sh 'git checkout dev'
+         sh "git checkout dev"
          sh "git merge origin/${RC_BRANCH}"
-         sh 'git push'
+         sh "git push origin dev"
 
          // Merge to master and Tag
-         sh 'git checkout master'
+         sh "git checkout master"
          sh "git merge origin/${RC_BRANCH}"
+         sh "git push origin master"
          sh "git tag ${NEW_TAG}"
-         sh 'git push'
-         sh 'git push --tags'
+         sh "git push --tags"
       }
    }
 
