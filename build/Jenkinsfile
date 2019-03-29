@@ -1,0 +1,41 @@
+// job
+try {
+
+   // New Tag
+   def NEW_TAG = "${TAG}"
+   NEW_TAG = NEW_TAG.substring(0, NEW_TAG.indexOf('-'))
+
+   // Input Step
+   timeout(time: 15, unit: "MINUTES") {
+      input message: "Do you want to create the tag: ${NEW_TAG} and deploy it to Staging?", ok: "Yes", submitter: "ariel,roberto,eder"
+   }
+
+   stage('Merge & Tag') {
+      
+      node('master') {
+         // Fetch all
+         sh 'git fetch --all --prune'
+
+         // Merge to dev
+         sh 'git checkout dev'
+         sh 'git merge ${TAG}'
+
+         // Merge to master
+         sh 'git checkout master'
+         sh 'git merge ${TAG}'
+
+         // Tag
+         sh 'git tag $NEW_TAG'
+      }
+   }
+
+} catch(e) {
+   // mark build as failed
+   currentBuild.result = "FAILURE";
+
+   // send slack notification
+   slackSend (color: '#FF0000', message: "FAILED: Job '${env.JOB_NAME} [${env.BUILD_NUMBER}]' (${env.BUILD_URL})")
+
+   // throw the error
+   throw e;
+}
