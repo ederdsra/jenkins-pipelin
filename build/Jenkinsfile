@@ -1,10 +1,12 @@
 try {
-   // RC Branch
-   def RC_BRANCH
+   
    
    // New Tag
    def NEW_TAG = "${TAG}"
    NEW_TAG = NEW_TAG.substring(0, NEW_TAG.indexOf('-'))
+
+   // RC Branch
+   def RC_BRANCH = "rc/" + NEW_TAG.substring(1)
 
    // Input Step
    timeout(time: 15, unit: "MINUTES") {
@@ -17,13 +19,6 @@ try {
          checkout scm
          // Fetch all
          sh 'git fetch --all --prune'
-
-         // Get RC Branch
-         sh "git branch --contains tags/${TAG}"
-         sh "git branch --contains tags/${TAG} > .git/rc-branch"
-         RC_BRANCH = readFile('.git/rc-branch').trim().substring(2)
-
-         sh "echo ${RC_BRANCH}"
 
          // Merge to dev
          sh 'git checkout dev'
