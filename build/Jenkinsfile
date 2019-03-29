@@ -19,6 +19,8 @@ try {
          // Fetch all
          sh "git fetch --all --prune"
 
+         sh "git remote add origin git@github.com:ederdsra/jenkins-pipelin.git"
+
          // Merge to dev
          sh "git checkout dev"
          sh "git merge origin/${RC_BRANCH}"
